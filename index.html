@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vinicius Fernandes | Consultoria online de treino</title>
+<meta name="description" content="Consultoria online com Vinicius Fernandes, personal trainer. Treino individualizado, avaliação da execução e acompanhamento de perto. Também para quem usa caneta para emagrecer e quer preservar os músculos.">
+<meta name="theme-color" content="#0B0B0C">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Vinicius Fernandes | Pare de treinar no achismo">
+<meta property="og:description" content="Treino individualizado, avaliação da execução e acompanhamento de perto. Consultoria online.">
+<meta property="og:url" content="https://consultoria-vinicius-fernandes.vercel.app/">
+<meta property="og:image" content="https://consultoria-vinicius-fernandes.vercel.app/assets/img/vf-apontando.jpg">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Libre+Caslon+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+<script>
+  /* Antes da primeira pintura: decide se anima e se mostra a abertura (1ª visita da sessão). */
+  (function (h) {
+    h.classList.add('js');
+    var motion = false, intro = false;
+    try {
+      motion = /[?&]motion=1(&|$)/.test(location.search) || !matchMedia('(prefers-reduced-motion: reduce)').matches;
+      intro = motion && !sessionStorage.getItem('vf-intro');
+    } catch (e) {}
+    if (motion) h.classList.add('motion-ok');
+    if (intro) h.classList.add('com-intro');
+  })(document.documentElement);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="main.js" defer></script>
+</head>
+<body>
+
+<!-- Símbolo VF reutilizado em todo o site -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="vf" viewBox="0 0 100 100">
+      <polygon class="vf-v" points="2,24 27,24 43,60 31,86"/>
+      <polygon class="vf-f" points="38,12 96,12 91,30 58,30 55,43 84,43 79,60 51,60 45,88 25,88"/>
+    </symbol>
+    <filter id="aspero" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="r"/>
+      <feDisplacementMap in="SourceGraphic" in2="r" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ABERTURA: grade vermelha da marca + símbolo. Some sozinha; um toque pula. -->
+<div class="intro" aria-hidden="true">
+  <div class="grade grade--intro"><div class="grade-chao"></div><div class="grade-teto"></div></div>
+  <div class="intro-centro">
+    <svg class="intro-vf" viewBox="0 0 100 100"><polygon class="vf-v" points="2,24 27,24 43,60 31,86"/><polygon class="vf-f" points="38,12 96,12 91,30 58,30 55,43 84,43 79,60 51,60 45,88 25,88"/></svg>
+    <div class="intro-nome"><span>Vinicius</span> <span>Fernandes</span></div>
+    <div class="intro-tag">Personal trainer</div>
+  </div>
+  <div class="intro-cortina"></div>
+</div>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="progresso" aria-hidden="true"><span></span></div>
+
+<header class="nav">
+  <div class="wrap nav-dentro">
+    <a class="nav-marca" href="#topo" aria-label="Vinicius Fernandes, início">
+      <svg class="nav-vf" aria-hidden="true"><use href="#vf"/></svg>
+      <span class="nav-textos">
+        <span class="nav-nome">Vinicius Fernandes</span>
+        <span class="nav-tag">Personal trainer</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="#metodo">Método</a>
+      <a href="#caneta">Caneta</a>
+      <a href="#resultados">Resultados</a>
+    </nav>
+    <a class="btn btn--vermelho btn--nav" href="#comecar">Quero começar</a>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- 1. TOPO -->
+  <section id="topo" class="topo">
+    <div class="grade grade--topo" aria-hidden="true"><div class="grade-chao"></div></div>
+    <div class="topo-luz" aria-hidden="true"></div>
+
+    <div class="wrap topo-grade">
+      <div class="topo-texto">
+        <p class="rotulo topo-rotulo"><span class="ponto"></span>Consultoria online · Treino individualizado</p>
+        <h1 class="topo-titulo" aria-label="Pare de treinar no achismo.">
+          <span class="linha" aria-hidden="true"><span class="palavra">Pare</span> <span class="palavra">de</span></span>
+          <span class="linha" aria-hidden="true"><span class="palavra">treinar</span> <span class="palavra">no</span></span>
+          <span class="linha linha--marca" aria-hidden="true"><span class="marca-texto"><span class="marca-fundo"></span><span class="palavra">achismo.</span></span></span>
+        </h1>
+        <p class="topo-sub">Eu avalio sua execução, monto seu treino de acordo com o seu objetivo e acompanho sua evolução de perto.</p>
+        <div class="topo-botoes">
+          <a class="btn btn--vermelho btn--grande magnetico" href="#comecar">
+            Quero meu treino
+            <svg class="seta" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--linha" href="#resultados">Ver resultados</a>
+        </div>
+        <ul class="topo-provas" aria-label="O que você recebe">
+          <li><span>01</span>Avaliação da execução</li>
+          <li><span>02</span>Treino feito pra você</li>
+          <li><span>03</span>Acompanhamento de perto</li>
+        </ul>
+      </div>
+
+      <div class="topo-midia">
+        <div class="cartao-video" data-tilt>
+          <video class="video" src="assets/video/hero.mp4" poster="assets/img/hero-poster.jpg" muted loop playsinline preload="metadata" aria-label="Vinicius explicando um ajuste de execução durante o treino de uma aluna"></video>
+          <div class="video-veu" aria-hidden="true"></div>
+          <span class="anot anot--1" aria-hidden="true"><i></i>Ajuste de postura</span>
+          <span class="anot anot--2" aria-hidden="true"><i></i>Controle do movimento</span>
+          <span class="anot anot--3" aria-hidden="true"><i></i>Progressão de carga</span>
+          <span class="cartao-rec" aria-hidden="true"><b></b>Treino real</span>
+          <span class="canto canto--a" aria-hidden="true"></span><span class="canto canto--b" aria-hidden="true"></span>
+        </div>
+        <a class="selo-insta" href="https://www.instagram.com/viny.fernandespersonal/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle class="ig-ponto" cx="17.3" cy="6.7" r="1"/></svg>
+          @viny.fernandespersonal
+        </a>
+      </div>
+    </div>
+
+    <a class="rolar" href="#problema" aria-label="Rolar para a próxima seção"><span></span></a>
+  </section>
+
+  <!-- FAIXA -->
+  <div class="faixa" aria-hidden="true">
+    <div class="faixa-trilho">
+      <span>Estratégia</span><i>✕</i><span>Constância</span><i>✕</i><span>Execução</span><i>✕</i><span>Ajuste</span><i>✕</i><span>Acompanhamento</span><i>✕</i>
+      <span>Estratégia</span><i>✕</i><span>Constância</span><i>✕</i><span>Execução</span><i>✕</i><span>Ajuste</span><i>✕</i><span>Acompanhamento</span><i>✕</i>
+    </div>
+  </div>
+
+  <!-- 2. O PROBLEMA -->
+  <section id="problema" class="secao problema">
+    <div class="wrap">
+      <div class="cabeca" data-revela>
+        <p class="rotulo rotulo--vermelho">O problema</p>
+        <h2 class="titulo">Quase nunca é falta de força.<br>É falta de <span class="marcador">ajuste.</span></h2>
+      </div>
+      <ol class="dores">
+        <li class="dor" data-revela>
+          <span class="dor-num">01</span>
+          <h3 class="dor-titulo">Treino copiado</h3>
+          <p>Planilha pronta não conhece sua rotina, seu corpo nem o seu objetivo.</p>
+          <span class="carimbo" aria-hidden="true">Achismo</span>
+        </li>
+        <li class="dor" data-revela>
+          <span class="dor-num">02</span>
+          <h3 class="dor-titulo">Execução sem correção</h3>
+          <p>Distância do apoio, posição do pé, ajuste do aparelho. Detalhe errado vira desconforto e estagnação.</p>
+          <span class="carimbo" aria-hidden="true">Achismo</span>
+        </li>
+        <li class="dor" data-revela>
+          <span class="dor-num">03</span>
+          <h3 class="dor-titulo">Ninguém olhando</h3>
+          <p>Sem acompanhamento, você não sabe se está evoluindo ou só repetindo o mesmo treino no automático.</p>
+          <span class="carimbo" aria-hidden="true">Achismo</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3. O DETALHE (método na prática) -->
+  <section id="metodo" class="secao detalhe">
+    <div class="wrap">
+      <div class="cabeca cabeca--larga" data-revela>
+        <p class="rotulo rotulo--vermelho">Na prática</p>
+        <h2 class="titulo">O detalhe que faz <span class="vermelho">toda a diferença.</span></h2>
+        <p class="cabeca-nota">Dois casos reais que estão no meu perfil. Mesmo exercício, outro resultado, só com ajuste.</p>
+      </div>
+
+      <div class="caso-bulgaro">
+        <div class="cb-midia">
+          <div class="cb-cola">
+            <div class="cb-quadro">
+              <video class="video" src="assets/video/bulgaro.mp4" poster="assets/img/bulgaro-poster.jpg" muted loop playsinline preload="none" aria-label="Vinicius corrigindo o agachamento búlgaro da aluna Nati"></video>
+              <div class="video-veu" aria-hidden="true"></div>
+              <div class="cb-hud" aria-hidden="true">
+                <span class="cb-hud-rotulo">Caso 01 · Agachamento búlgaro</span>
+                <span class="cb-hud-ajuste"><b data-hud-num>01</b>/04 <em data-hud-txt>Distância do apoio</em></span>
+              </div>
+              <span class="canto canto--a" aria-hidden="true"></span><span class="canto canto--b" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div class="cb-texto">
+          <div class="cb-intro" data-revela>
+            <h3 class="cb-titulo">“O búlgaro é impossível.”</h3>
+            <p>Com a Nati, o problema não era força. Eram quatro detalhes. Ajustamos um por um e o exercício ficou muito mais seguro, estável e eficiente.</p>
+          </div>
+          <ol class="ajustes">
+            <li class="ajuste" data-ajuste="Distância do apoio"><span class="ajuste-num">01</span><div><h4>Distância do apoio</h4><p>Perto demais trava o movimento. Longe demais tira o equilíbrio.</p></div></li>
+            <li class="ajuste" data-ajuste="Posição do pé"><span class="ajuste-num">02</span><div><h4>Posição do pé</h4><p>A base certa muda onde o exercício trabalha e quanto ele pesa no joelho.</p></div></li>
+            <li class="ajuste" data-ajuste="Inclinação do tronco"><span class="ajuste-num">03</span><div><h4>Inclinação do tronco</h4><p>Um pequeno ângulo muda o estímulo. Cada corpo pede um.</p></div></li>
+            <li class="ajuste" data-ajuste="Controle do movimento"><span class="ajuste-num">04</span><div><h4>Controle do movimento</h4><p>Sem carga no início. Primeiro domina a descida, depois progride.</p></div></li>
+          </ol>
+        </div>
+      </div>
+
+      <article class="caso-extensora" data-revela>
+        <figure class="ce-foto">
+          <img src="assets/img/extensora-ajuste.jpg" alt="Aluna na cadeira extensora com a seta vermelha indicando o ajuste do banco" width="720" height="780" loading="lazy" decoding="async">
+          <span class="canto canto--a" aria-hidden="true"></span><span class="canto canto--b" aria-hidden="true"></span>
+        </figure>
+        <div class="ce-texto">
+          <span class="rotulo rotulo--vermelho">Caso 02 · Cadeira extensora</span>
+          <h3 class="ce-titulo">Dor no joelho? Talvez o problema esteja <span class="marcador">no ajuste.</span></h3>
+          <p>Antes de pensar em aumentar a carga, olhei o aparelho. A cadeira da Natália estava muito para frente. Trouxemos um pouco para trás e ela executou com mais conforto e uma amplitude melhor.</p>
+          <div class="ce-comparar">
+            <div><span class="ce-tag">Antes</span><p>Cadeira para frente, joelho reclamando.</p></div>
+            <svg class="ce-seta" viewBox="0 0 60 24" aria-hidden="true"><path d="M2 12h52M44 3l10 9-10 9"/></svg>
+            <div><span class="ce-tag ce-tag--vermelho">Depois</span><p>Ajuste simples, movimento confortável.</p></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. CANETA -->
+  <section id="caneta" class="secao caneta">
+    <div class="caneta-palavra" aria-hidden="true"><span>Preserve o músculo</span><span>Preserve o músculo</span></div>
+    <div class="wrap caneta-grade">
+      <figure class="caneta-foto" data-revela>
+        <img src="assets/img/caneta-treino.jpg" alt="Vinicius acompanhando o exercício de uma aluna no step" width="720" height="920" loading="lazy" decoding="async">
+        <figcaption><span class="ponto"></span>Treino e caneta emagrecedora</figcaption>
+      </figure>
+      <div class="caneta-texto">
+        <div data-revela>
+          <p class="rotulo rotulo--vermelho">Usa caneta para emagrecer?</p>
+          <h2 class="titulo">Então não treine no <span class="marcador">automático.</span></h2>
+          <p class="caneta-lead">Emagrecer não é só ver o número da balança diminuir. É cuidar da força, preservar a massa muscular e construir um corpo mais saudável durante todo o processo.</p>
+        </div>
+        <ul class="pilares">
+          <li data-revela><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 22l7-7 5 5 12-12"/><path d="M20 8h8v8"/></svg><div><h3>Progressão de carga inteligente</h3><p>A carga sobe quando a execução permite, nem antes, nem depois.</p></div></li>
+          <li data-revela><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="12" width="5" height="8"/><rect x="24" y="12" width="5" height="8"/><path d="M8 16h16"/><rect x="8" y="9" width="3" height="14"/><rect x="21" y="9" width="3" height="14"/></svg><div><h3>Intensidade sem perder a qualidade</h3><p>Treino que desafia, com a técnica no lugar.</p></div></li>
+          <li data-revela><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12"/><path d="M16 9v7l5 3"/></svg><div><h3>Ajuste de postura e esforço</h3><p>Cada série com intenção, para o músculo trabalhar de verdade.</p></div></li>
+        </ul>
+        <p class="caneta-aviso" data-revela>O uso da medicação é decidido com o seu médico. O meu papel é o treino.</p>
+        <a class="btn btn--vermelho magnetico" href="#comecar" data-revela>Quero proteger meus músculos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. RESULTADOS (seção editorial, no estilo dos carrosséis do perfil) -->
+  <section id="resultados" class="secao resultados">
+    <div class="wrap">
+      <div class="cabeca cabeca--papel" data-revela>
+        <p class="rotulo rotulo--escuro">Resultados</p>
+        <h2 class="titulo titulo--papel">A transformação não acontece <em>por acaso.</em></h2>
+        <p class="cabeca-nota">Ela acontece quando existe um plano certo para você.</p>
+      </div>
+
+      <div class="res-grade">
+        <article class="res-poliana" data-revela>
+          <div class="comparador" data-comparador>
+            <div class="comp-camada comp-depois"><img src="assets/img/poliana-1-depois.jpg" alt="Poliana depois do acompanhamento" width="536" height="1440" loading="lazy" decoding="async" data-depois></div>
+            <div class="comp-camada comp-antes"><img src="assets/img/poliana-1-antes.jpg" alt="Poliana antes do acompanhamento" width="536" height="1440" loading="lazy" decoding="async" data-antes></div>
+            <span class="comp-tag comp-tag--antes">Antes</span>
+            <span class="comp-tag comp-tag--depois">Depois</span>
+            <div class="comp-divisor" aria-hidden="true"><span class="comp-pegador"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
+            <input class="comp-range" type="range" min="0" max="100" value="50" aria-label="Arraste para comparar antes e depois">
+            <span class="fita fita--a" aria-hidden="true"></span>
+          </div>
+          <div class="poliana-trocas" role="group" aria-label="Escolher foto">
+            <button type="button" class="troca ativa" data-par="1" aria-pressed="true">Foto 1</button>
+            <button type="button" class="troca" data-par="2" aria-pressed="false">Foto 2</button>
+          </div>
+          <div class="res-legenda">
+            <h3 class="res-nome">Poliana</h3>
+            <p>Chegou buscando emagrecer. No caminho, a transformação foi muito além da balança: autoestima, mente mais leve e orgulho de cada pequena evolução.</p>
+          </div>
+        </article>
+
+        <article class="res-jennifer">
+          <div class="jen-fotos">
+            <figure class="jen-foto" data-revela><img src="assets/img/jennifer-1.jpg" alt="Evolução da Jennifer vista de costas" width="828" height="828" loading="lazy" decoding="async"><span class="fita" aria-hidden="true"></span></figure>
+            <figure class="jen-foto" data-revela><img src="assets/img/jennifer-2.jpg" alt="Evolução da Jennifer vista de frente" width="833" height="833" loading="lazy" decoding="async"><span class="fita" aria-hidden="true"></span></figure>
+            <figure class="jen-foto" data-revela><img src="assets/img/jennifer-3.jpg" alt="Evolução da Jennifer vista de lado" width="850" height="850" loading="lazy" decoding="async"><span class="fita" aria-hidden="true"></span></figure>
+          </div>
+          <div class="res-legenda" data-revela>
+            <h3 class="res-nome">Jennifer</h3>
+            <p>Costas mais definidas. Pernas mais fortes. Glúteos mais desenvolvidos. E, principalmente, uma mulher muito mais confiante.</p>
+          </div>
+        </article>
+      </div>
+      <p class="res-nota">Fotos publicadas no perfil @viny.fernandespersonal. Resultados variam de pessoa para pessoa.</p>
+    </div>
+  </section>
+
+  <!-- 6. COMO FUNCIONA -->
+  <section class="secao passos-secao">
+    <div class="wrap">
+      <div class="cabeca" data-revela>
+        <p class="rotulo rotulo--vermelho">Como funciona</p>
+        <h2 class="titulo">Do primeiro contato <span class="vermelho">à evolução.</span></h2>
+      </div>
+      <ol class="passos">
+        <span class="passos-linha" aria-hidden="true"><span></span></span>
+        <li class="passo" data-revela><span class="passo-num">01</span><h3>Você me conta tudo</h3><p>Objetivo, rotina, onde treina e o que já fez até aqui.</p></li>
+        <li class="passo" data-revela><span class="passo-num">02</span><h3>Treino montado pra você</h3><p>Nada de planilha pronta. O treino é feito de acordo com o seu objetivo.</p></li>
+        <li class="passo" data-revela><span class="passo-num">03</span><h3>Eu avalio sua execução</h3><p>Os detalhes que travam sua evolução são corrigidos um por um.</p></li>
+        <li class="passo" data-revela><span class="passo-num">04</span><h3>Evolução de perto</h3><p>O treino é ajustado conforme você evolui. Constância com direção.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. SOBRE -->
+  <section class="secao sobre">
+    <div class="wrap sobre-grade">
+      <figure class="sobre-foto" data-revela>
+                <img src="assets/img/vf-sentado.jpg" alt="Retrato de Vinicius Fernandes" width="720" height="610" loading="lazy" decoding="async">
+      </figure>
+      <div class="sobre-texto">
+        <div data-revela>
+          <p class="rotulo">Quem vai te acompanhar</p>
+          <h2 class="titulo">Vinicius <span class="vermelho">Fernandes</span></h2>
+        </div>
+        <p class="sobre-bio" data-revela>Personal trainer. Meu trabalho é tirar você do achismo. Cada pessoa precisa de uma estratégia diferente para evoluir, e é exatamente isso que eu faço na consultoria online.</p>
+        <p class="sobre-bio sobre-bio--sec" data-revela>Cada aluno chega com uma história, uma rotina e um objetivo diferente. Em comum, a decisão de parar de adiar o cuidado com a própria saúde.</p>
+        <ul class="etiquetas" data-revela>
+          <li>Personal trainer</li>
+          <li>Consultoria online</li>
+          <li>Treino para quem usa caneta</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. FUNIL: 3 perguntas e a mensagem sai pronta -->
+  <section id="comecar" class="secao funil">
+    <div class="grade grade--funil" aria-hidden="true"><div class="grade-chao"></div></div>
+    <div class="wrap funil-grade">
+      <div class="funil-cabeca" data-revela>
+        <p class="rotulo rotulo--vermelho">Comece por aqui</p>
+        <h2 class="titulo">3 perguntas.<br>Sua mensagem <span class="marcador">sai pronta.</span></h2>
+        <p class="cabeca-nota">Responda rápido e me mande. Eu entendo o seu caso e te explico como seria o seu acompanhamento.</p>
+      </div>
+
+      <form class="quiz" data-quiz novalidate>
+        <div class="quiz-topo">
+          <span class="quiz-etapa"><b data-etapa>1</b>/4</span>
+          <span class="quiz-barra"><span data-barra></span></span>
+        </div>
+
+        <fieldset class="quiz-passo ativo" data-passo="1">
+          <legend class="quiz-pergunta">Qual é o seu objetivo principal?</legend>
+          <div class="opcoes">
+            <label class="opcao"><input type="radio" name="objetivo" value="emagrecer"><span><b>Emagrecer</b><small>Perder gordura com saúde</small></span></label>
+            <label class="opcao"><input type="radio" name="objetivo" value="ganhar massa e força"><span><b>Ganhar massa e força</b><small>Evoluir carga e músculo</small></span></label>
+            <label class="opcao"><input type="radio" name="objetivo" value="definir e desenvolver glúteos e pernas"><span><b>Glúteos e pernas</b><small>Definir e desenvolver</small></span></label>
+            <label class="opcao"><input type="radio" name="objetivo" value="treinar usando caneta sem perder músculo"><span><b>Uso caneta</b><small>Emagrecer sem perder músculo</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="quiz-passo" data-passo="2">
+          <legend class="quiz-pergunta">Como está o seu treino hoje?</legend>
+          <div class="opcoes">
+            <label class="opcao"><input type="radio" name="momento" value="não estou treinando"><span><b>Não estou treinando</b><small>Quero começar do jeito certo</small></span></label>
+            <label class="opcao"><input type="radio" name="momento" value="treino por conta própria"><span><b>Treino por conta</b><small>Mas sinto que não evoluo</small></span></label>
+            <label class="opcao"><input type="radio" name="momento" value="estou voltando depois de um tempo parado"><span><b>Estou voltando</b><small>Depois de um tempo parado</small></span></label>
+            <label class="opcao"><input type="radio" name="momento" value="já treino com acompanhamento e quero mudar"><span><b>Já tenho acompanhamento</b><small>E quero algo diferente</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="quiz-passo" data-passo="3">
+          <legend class="quiz-pergunta">Onde você treina?</legend>
+          <div class="opcoes opcoes--3">
+            <label class="opcao"><input type="radio" name="local" value="na academia"><span><b>Academia</b></span></label>
+            <label class="opcao"><input type="radio" name="local" value="em casa"><span><b>Em casa</b></span></label>
+            <label class="opcao"><input type="radio" name="local" value="ainda vou escolher"><span><b>Ainda vou escolher</b></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="quiz-passo" data-passo="4">
+          <legend class="quiz-pergunta">Pronto. Como posso te chamar?</legend>
+          <label class="campo">
+            <span class="sr-only">Seu nome</span>
+            <input type="text" name="nome" autocomplete="given-name" placeholder="Seu primeiro nome" maxlength="40">
+          </label>
+          <div class="previa">
+            <span class="previa-rotulo">Sua mensagem</span>
+            <p class="previa-texto" data-previa></p>
+          </div>
+          <a class="btn btn--vermelho btn--bloco btn--grande magnetico" href="https://www.instagram.com/viny.fernandespersonal/" target="_blank" rel="noopener" data-enviar>
+            <svg class="icone-whats" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.6 19.4z"/><path d="M9 9.5c.3 2 2.3 4.3 5 5l1.2-1.3 2 .9c-.3 1-1.2 1.7-2.4 1.6C11.6 15.4 8.6 12.4 8.3 9.3 8.2 8.2 9 7.3 10 7l.9 2z" class="whats-fone"/></svg>
+            <span data-enviar-txt>Enviar minha mensagem</span>
+          </a>
+          <p class="quiz-ajuda" data-ajuda></p>
+        </fieldset>
+
+        <div class="quiz-navegar">
+          <button type="button" class="quiz-voltar" data-voltar disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Voltar
+          </button>
+          <span class="quiz-dica" data-dica>Escolha uma opção</span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- 9. DÚVIDAS -->
+  <section class="secao duvidas">
+    <div class="wrap duvidas-grade">
+      <div class="cabeca" data-revela>
+        <p class="rotulo rotulo--vermelho">Dúvidas</p>
+        <h2 class="titulo">Antes de <span class="vermelho">começar.</span></h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item" data-revela>
+          <summary><span>Preciso já estar treinando para começar?</span><i aria-hidden="true"></i></summary>
+          <div class="faq-resp"><p>Não. O treino é montado a partir de onde você está hoje: sua rotina, seu histórico e o seu objetivo. Você não precisa se sentir pronto para começar.</p></div>
+        </details>
+        <details class="faq-item" data-revela>
+          <summary><span>Uso caneta para emagrecer. Faz sentido para mim?</span><i aria-hidden="true"></i></summary>
+          <div class="faq-resp"><p>Faz, e é quando o treino mais importa: para preservar força e massa muscular enquanto você emagrece. A medicação continua sendo acompanhada pelo seu médico.</p></div>
+        </details>
+        <details class="faq-item" data-revela>
+          <summary><span>Como funciona o acompanhamento online?</span><i aria-hidden="true"></i></summary>
+          <div class="faq-resp"><p>Você recebe um treino individualizado, eu avalio a sua execução e faço os ajustes conforme você evolui. Os detalhes do formato eu te explico na conversa.</p></div>
+        </details>
+        <details class="faq-item" data-revela>
+          <summary><span>Quanto custa?</span><i aria-hidden="true"></i></summary>
+          <div class="faq-resp"><p>Depende do plano. Me manda uma mensagem, eu entendo o seu objetivo e te passo os valores e as opções.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CHAMADA FINAL -->
+  <section class="final" aria-labelledby="titulo-final">
+        <div class="wrap final-grade">
+      <figure class="final-foto" data-revela>
+        <img src="assets/img/vf-apontando.jpg" alt="Vinicius Fernandes apontando para a câmera" width="720" height="650" loading="lazy" decoding="async">
+      </figure>
+      <div class="final-texto">
+        <h2 class="final-titulo" id="titulo-final">Seu próximo passo pode começar <span class="marca-texto"><span class="marca-fundo"></span><span>hoje.</span></span></h2>
+        <p class="final-sub" data-revela>Me chama e conta o seu objetivo. Eu te explico como seria o seu acompanhamento.</p>
+        <div class="final-botoes" data-revela>
+          <a class="btn btn--vermelho btn--grande magnetico" href="https://www.instagram.com/viny.fernandespersonal/" target="_blank" rel="noopener" data-cta data-msg="Olá, Vinicius! Vim pelo site e quero saber como funciona a consultoria online.">
+            <svg class="icone-whats" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.6 19.4z"/></svg>
+            <span data-cta-txt>Falar com o Vinicius</span>
+          </a>
+          <a class="btn btn--linha" href="#comecar">Responder as 3 perguntas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="wrap rodape-dentro">
+    <div class="rodape-marca">
+      <svg class="rodape-vf" aria-hidden="true"><use href="#vf"/></svg>
+      <div>
+        <span class="rodape-nome">Vinicius Fernandes</span>
+        <span class="rodape-tag">Consultoria online de personal trainer</span>
+      </div>
+    </div>
+    <a class="rodape-insta" href="https://www.instagram.com/viny.fernandespersonal/" target="_blank" rel="noopener">@viny.fernandespersonal</a>
+  </div>
+</footer>
+
+<a class="flutuante" href="https://www.instagram.com/viny.fernandespersonal/" target="_blank" rel="noopener" data-cta data-msg="Olá, Vinicius! Vim pelo site e quero saber como funciona a consultoria online." aria-label="Falar com o Vinicius" tabindex="-1">
+  <svg class="icone-whats" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.6 19.4z"/></svg>
+</a>
+
+<div class="aviso" role="status" aria-live="polite"></div>
+
+</body>
+</html>
