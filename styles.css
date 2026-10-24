@@ -46,10 +46,12 @@ body {
   overflow-x: clip;
 }
 /* grão de filme por cima de tudo, como nas capas do perfil */
+/* (sem mix-blend: a mistura de cores sobre a página inteira travava a rolagem no celular) */
 body::after {
   content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none;
-  background-image: var(--grao); opacity: .07; mix-blend-mode: overlay;
+  background-image: var(--grao); opacity: .035;
 }
+@media (max-width: 959px) { body::after { display: none; } }
 
 img, video { display: block; max-width: 100%; }
 img { height: auto; }
@@ -91,6 +93,7 @@ a, button, label { -webkit-tap-highlight-color: transparent; }
 .ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--vermelho); box-shadow: 0 0 0 0 var(--vermelho-brilho); }
 .motion-ok .ponto { animation: pulso 1.8s infinite; }
 @keyframes pulso { 70% { box-shadow: 0 0 0 10px rgba(229, 9, 20, 0); } 100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); } }
+@keyframes onda { from { transform: scale(1); opacity: .6; } to { transform: scale(1.7); opacity: 0; } }
 
 .titulo {
   font-family: var(--f-titulo); font-weight: 400;
@@ -139,14 +142,18 @@ a, button, label { -webkit-tap-highlight-color: transparent; }
 .icone-whats { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
 .whats-fone { fill: currentColor; stroke: none; }
 
-/* ---------- Grade vermelha em perspectiva (assinatura dos vídeos) ---------- */
+/* ---------- Grade vermelha em perspectiva (assinatura dos vídeos) ----------
+   O movimento é um translate num filho (composição na GPU), não background-position,
+   que redesenhava a área toda a cada quadro. */
 .grade { position: absolute; inset: 0; overflow: hidden; perspective: 520px; perspective-origin: 50% 40%; pointer-events: none; }
-.grade-chao, .grade-teto {
-  position: absolute; left: -60%; right: -60%; height: 62%;
+.grade-chao, .grade-teto { position: absolute; left: -60%; right: -60%; height: 62%; overflow: hidden; }
+.grade-chao::before, .grade-teto::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -90px; bottom: -90px;
   background-image:
     linear-gradient(var(--vermelho) 2px, transparent 2px),
     linear-gradient(90deg, var(--vermelho) 2px, transparent 2px);
   background-size: 90px 90px; background-position: 50% 0;
+  will-change: transform;
 }
 .grade-chao {
   top: 50%; transform-origin: 50% 0; transform: rotateX(78deg);
@@ -158,10 +165,11 @@ a, button, label { -webkit-tap-highlight-color: transparent; }
   -webkit-mask-image: linear-gradient(to top, transparent 0, #000 22%, #000 100%);
           mask-image: linear-gradient(to top, transparent 0, #000 22%, #000 100%);
 }
-.motion-ok .grade-chao { animation: chao 2.4s linear infinite; }
-.motion-ok .grade-teto { animation: teto 2.4s linear infinite; }
-@keyframes chao { to { background-position: 50% 90px; } }
-@keyframes teto { to { background-position: 50% -90px; } }
+.motion-ok .grade-chao::before { animation: chao 2.4s linear infinite; }
+.motion-ok .grade-teto::before { animation: teto 2.4s linear infinite; }
+.grade.parada .grade-chao::before, .grade.parada .grade-teto::before { animation-play-state: paused; }
+@keyframes chao { to { transform: translate3d(0, 90px, 0); } }
+@keyframes teto { to { transform: translate3d(0, -90px, 0); } }
 
 /* ---------- Abertura ---------- */
 .intro { display: none; }
@@ -186,9 +194,9 @@ html.com-intro body { overflow: hidden; }
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--nav-h);
   display: flex; align-items: center;
-  transition: background-color .4s, backdrop-filter .4s, transform .5s var(--ease), box-shadow .4s;
+  transition: background-color .4s, transform .5s var(--ease), box-shadow .4s;
 }
-.nav.rolou { background: rgba(11, 11, 12, .78); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--linha); }
+.nav.rolou { background: rgba(11, 11, 12, .94); box-shadow: 0 1px 0 var(--linha); }
 .nav.escondida { transform: translateY(-100%); }
 .nav-dentro { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .nav-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -257,7 +265,7 @@ html.com-intro body { overflow: hidden; }
 .canto--b { bottom: -9px; right: -9px; border-left: 0; border-top: 0; }
 .anot {
   position: absolute; display: inline-flex; align-items: center; gap: 8px;
-  padding: 7px 12px 7px 9px; background: rgba(11,11,12,.82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  padding: 7px 12px 7px 9px; background: rgba(11,11,12,.9);
   border-left: 3px solid var(--vermelho);
   font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
 }
@@ -458,7 +466,7 @@ html:not(.motion-ok) .ajuste { opacity: 1; }
 .funil-grade { position: relative; display: grid; gap: 40px; align-items: start; }
 .quiz {
   position: relative; padding: 26px 20px 22px;
-  background: rgba(19, 19, 21, .92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  background: var(--carvao);
   box-shadow: inset 0 0 0 1px var(--linha), 0 40px 100px -40px #000;
 }
 .quiz::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--vermelho); }
@@ -555,8 +563,8 @@ html:not(.motion-ok) .ajuste { opacity: 1; }
   transform: scale(0); opacity: 0; pointer-events: none; transition: transform .5s var(--ease), opacity .3s;
 }
 .flutuante.visivel { transform: scale(1); opacity: 1; pointer-events: auto; }
-.flutuante::before { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 0 var(--vermelho-brilho); }
-.motion-ok .flutuante.visivel::before { animation: pulso 2.2s infinite; }
+.flutuante::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 50%; background: var(--vermelho); opacity: 0; }
+.motion-ok .flutuante.visivel::before { animation: onda 2.2s ease-out infinite; }
 
 .aviso {
   position: fixed; left: 50%; bottom: 90px; z-index: 260; max-width: calc(100% - 32px);

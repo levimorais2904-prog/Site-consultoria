@@ -61,14 +61,23 @@ const INSTAGRAM = 'viny.fernandespersonal';
   const barra = $('.progresso span');
   let ultimoY = 0;
   let finalVisivel = false;
+  // um cálculo por quadro, no máximo; a altura da página só é medida quando muda
+  let maxRolagem = 1;
+  const medeAltura = () => { maxRolagem = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+  medeAltura();
+  addEventListener('resize', medeAltura, { passive: true });
+  addEventListener('load', medeAltura);
+  if ('ResizeObserver' in window) new ResizeObserver(medeAltura).observe(document.body);
+
+  let pendente = false;
   function aoRolar() {
+    pendente = false;
     const y = window.scrollY;
     nav.classList.toggle('rolou', y > 20);
     nav.classList.toggle('escondida', y > 500 && y > ultimoY + 4);
     if (y < ultimoY - 4) nav.classList.remove('escondida');
     ultimoY = y;
-    const max = document.documentElement.scrollHeight - innerHeight;
-    barra.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+    barra.style.transform = `scaleX(${Math.min(1, y / maxRolagem)})`;
     const mostra = y > innerHeight * .8 && !finalVisivel;
     flutuante.classList.toggle('visivel', mostra);
     flutuante.tabIndex = mostra ? 0 : -1;
@@ -76,8 +85,16 @@ const INSTAGRAM = 'viny.fernandespersonal';
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([e]) => { finalVisivel = e.isIntersecting; aoRolar(); }, { threshold: .15 }).observe(final);
   }
-  addEventListener('scroll', aoRolar, { passive: true });
+  addEventListener('scroll', () => {
+    if (!pendente) { pendente = true; requestAnimationFrame(aoRolar); }
+  }, { passive: true });
   aoRolar();
+
+  /* ---------- Grades animadas param quando saem da tela ---------- */
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('parada', !e.isIntersecting)));
+    $$('.grade').forEach((g) => io.observe(g));
+  }
 
   /* ---------- Vídeos: tocam só quando aparecem ---------- */
   $$('video').forEach((v) => {
@@ -291,11 +308,17 @@ const INSTAGRAM = 'viny.fernandespersonal';
   /* ---------- Faixa: acelera e inverte com a rolagem ---------- */
   const trilho = $('.faixa-trilho');
   const loop = gsap.to(trilho, { xPercent: -50, duration: 22, ease: 'none', repeat: -1 });
+  // um único tween reaproveitado (antes eram dois tweens novos a cada evento de rolagem)
+  const velocidade = gsap.quickTo(loop, 'timeScale', { duration: .6, ease: 'power3.out' });
+  let sentido = 1, voltaTimer;
   ScrollTrigger.create({
+    trigger: '.faixa', start: 'top bottom', end: 'bottom top',
+    onToggle: (st) => (st.isActive ? loop.resume() : loop.pause()),
     onUpdate: (st) => {
-      const v = st.getVelocity() / 300;
-      gsap.to(loop, { timeScale: (st.direction > 0 ? 1 : -1) * Math.min(6, 1 + Math.abs(v)), duration: .3, overwrite: true });
-      gsap.to(loop, { timeScale: st.direction > 0 ? 1 : -1, duration: 1.2, delay: .3, overwrite: false });
+      sentido = st.direction;
+      velocidade(sentido * Math.min(5, 1 + Math.abs(st.getVelocity()) / 400));
+      clearTimeout(voltaTimer);
+      voltaTimer = setTimeout(() => velocidade(sentido), 160);
     }
   });
 
