@@ -6,7 +6,7 @@
    WHATSAPP: só números, com DDI e DDD (ex.: '5511999999999').
    Enquanto estiver vazio, todos os botões abrem o direct do Instagram
    e a mensagem pronta é copiada para a área de transferência. */
-const WHATSAPP = '553298078066';
+const WHATSAPP = '5532998078066';
 const INSTAGRAM = 'viny.fernandespersonal';
 
 (function () {
