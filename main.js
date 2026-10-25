@@ -57,10 +57,13 @@ const INSTAGRAM = 'viny.fernandespersonal';
   /* ---------- Navegação: fundo ao rolar, some descendo, volta subindo ---------- */
   const nav = $('.nav');
   const flutuante = $('.flutuante');
+  const barraCta = $('.barra-cta');
+  const barraLink = $('a', barraCta);
   const final = $('.final');
   const barra = $('.progresso span');
   let ultimoY = 0;
   let finalVisivel = false;
+  let ctasNaTela = 0; // a barra fixa some quando já há um "Quero começar agora" visível
   // um cálculo por quadro, no máximo; a altura da página só é medida quando muda
   let maxRolagem = 1;
   const medeAltura = () => { maxRolagem = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
@@ -81,9 +84,18 @@ const INSTAGRAM = 'viny.fernandespersonal';
     const mostra = y > innerHeight * .8 && !finalVisivel;
     flutuante.classList.toggle('visivel', mostra);
     flutuante.tabIndex = mostra ? 0 : -1;
+    const mostraBarra = mostra && ctasNaTela === 0;
+    barraCta.classList.toggle('visivel', mostraBarra);
+    barraLink.tabIndex = mostraBarra ? 0 : -1;
   }
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([e]) => { finalVisivel = e.isIntersecting; aoRolar(); }, { threshold: .15 }).observe(final);
+    const visiveis = new Set();
+    const ioCta = new IntersectionObserver((es) => {
+      es.forEach((e) => (e.isIntersecting ? visiveis.add(e.target) : visiveis.delete(e.target)));
+      ctasNaTela = visiveis.size; aoRolar();
+    });
+    $$('.cta-linha, .topo-botoes').forEach((el) => ioCta.observe(el));
   }
   addEventListener('scroll', () => {
     if (!pendente) { pendente = true; requestAnimationFrame(aoRolar); }
@@ -112,14 +124,6 @@ const INSTAGRAM = 'viny.fernandespersonal';
     const setPos = (v) => comp.style.setProperty('--pos', v + '%');
     range.addEventListener('input', () => setPos(range.value));
     setPos(range.value);
-    $$('.troca').forEach((b) => b.addEventListener('click', () => {
-      const n = b.dataset.par;
-      $('[data-antes]', comp).src = `assets/img/poliana-${n}-antes.jpg`;
-      $('[data-depois]', comp).src = `assets/img/poliana-${n}-depois.jpg`;
-      $$('.troca').forEach((x) => { x.classList.toggle('ativa', x === b); x.setAttribute('aria-pressed', x === b); });
-      range.value = 50; setPos(50);
-      if (anima) gsap.fromTo(comp, { scale: .97 }, { scale: 1, duration: .6, ease: 'expo.out' });
-    }));
     // dica de que dá para arrastar: a linha passeia uma vez quando aparece
     if (anima) {
       ScrollTrigger.create({
@@ -165,7 +169,7 @@ const INSTAGRAM = 'viny.fernandespersonal';
     enviarTxt.textContent = WHATSAPP ? 'Enviar no WhatsApp' : 'Enviar no direct';
     ajuda.textContent = WHATSAPP ? 'Abre o WhatsApp com a mensagem pronta.' : 'A mensagem é copiada e o direct do Instagram abre. É só colar.';
 
-    function vaiPara(i) {
+    function vaiPara(i, instantaneo) {
       const de = passos[atual];
       const para = passos[i];
       const frente = i > atual;
@@ -181,7 +185,7 @@ const INSTAGRAM = 'viny.fernandespersonal';
         const foco = para.querySelector('input:checked') || para.querySelector('input');
         if (foco) foco.focus({ preventScroll: true });
       };
-      if (!anima) { troca(); return; }
+      if (!anima || instantaneo) { troca(); return; }
       gsap.to(de, {
         x: frente ? -30 : 30, autoAlpha: 0, duration: .22, ease: 'power2.in',
         onComplete: () => {
@@ -204,6 +208,33 @@ const INSTAGRAM = 'viny.fernandespersonal';
     enviar.addEventListener('click', () => {
       atualizaMensagem();
       if (!WHATSAPP) { copia(mensagem()); mostraAviso('Mensagem copiada. É só colar no direct.'); }
+    });
+
+    /* As 3 perguntas abrem numa janela por cima da página, de qualquer botão
+       "Quero começar agora". Sem suporte a <dialog>, o botão segue o link do WhatsApp. */
+    const modal = $('#quiz-modal');
+    const caixa = $('.modal-caixa', modal);
+    function abrirQuiz(objetivo) {
+      if (!modal || typeof modal.showModal !== 'function') return false;
+      if (objetivo) {
+        const r = $$('input[name="objetivo"]', quiz).find((x) => x.value === objetivo);
+        if (r) { r.checked = true; if (atual === 0) vaiPara(1, true); }
+      }
+      modal.showModal();
+      html.classList.add('modal-aberto');
+      const foco = passos[atual].querySelector('input:checked') || passos[atual].querySelector('input');
+      if (foco) foco.focus({ preventScroll: true });
+      if (anima) gsap.fromTo(caixa, { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .55, ease: 'expo.out', clearProps: 'transform,opacity,visibility' });
+      return true;
+    }
+    if (modal) {
+      modal.addEventListener('close', () => html.classList.remove('modal-aberto'));
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+      $$('[data-fechar]', modal).forEach((b) => b.addEventListener('click', () => modal.close()));
+    }
+    document.addEventListener('click', (e) => {
+      const gatilho = e.target.closest('[data-abrir-quiz], a[href="#comecar"]');
+      if (gatilho && abrirQuiz(gatilho.dataset.objetivo)) e.preventDefault();
     });
   }
 
@@ -357,10 +388,6 @@ const INSTAGRAM = 'viny.fernandespersonal';
   gsap.fromTo('.caneta-palavra', { xPercent: 0 }, { xPercent: -35, ease: 'none', scrollTrigger: { trigger: '.caneta', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.from('.caneta-foto img', { clipPath: 'inset(0 100% 0 0)', duration: 1.3, ease: 'expo.inOut', scrollTrigger: { trigger: '.caneta-foto', start: 'top 80%', once: true } });
 
-  /* ---------- Resultados: fotos coladas com fita, parallax leve ---------- */
-  $$('.jen-foto').forEach((f, i) => {
-    gsap.to(f, { yPercent: [-6, 6, -3][i], ease: 'none', scrollTrigger: { trigger: '.res-jennifer', start: 'top bottom', end: 'bottom top', scrub: true } });
-  });
 
   /* ---------- Passos: linha preenche ---------- */
   const linhaP = $('.passos-linha span');
