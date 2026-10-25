@@ -447,7 +447,7 @@ html:not(.motion-ok) .ajuste { opacity: 1; }
 .res-nome::after { content: ""; display: block; width: 46px; height: 2px; margin: 12px auto 0; background: var(--vermelho); }
 .res-legenda p { margin-top: 12px; color: var(--tinta-sec); font-size: 16px; }
 .res-destaque { max-width: 420px; width: 100%; margin: 0 auto; }
-.res-destaque .comparador { aspect-ratio: 538 / 1080; max-width: 400px; }
+.res-destaque .comparador { max-width: 360px; }
 .res-casos { min-width: 0; }
 .res-casos-rotulo { font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-sec); margin-bottom: 18px; }
 .casos-trilho {
