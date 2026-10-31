@@ -701,3 +701,9 @@ html.modal-aberto { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html:not(.motion-ok) *, html:not(.motion-ok) *::before, html:not(.motion-ok) *::after { animation: none !important; transition: none !important; }
 }
+
+/* Sem barras de rolagem visíveis (a página e o carrossel continuam rolando normalmente) */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.casos-trilho { scrollbar-width: none; }
+.casos-trilho::-webkit-scrollbar { display: none; }
